@@ -5,160 +5,371 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#102b46">
-  <title>CAMPUS DZ | المجتمع الجامعي الجزائري</title>
+  <title>CAMPUS DZ - المجتمع الجامعي الجزائري</title>
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background: #f2f5fa;
       color: #172b42;
+      transition: 0.3s;
     }
+
     header {
       background: #102b46;
       color: white;
-      padding: 22px 16px;
       text-align: center;
+      padding: 30px 15px;
     }
-    header h1 { margin: 0 0 8px; }
-    header p { margin: 0; color: #c8d8e8; }
+
+    header h1 {
+      font-size: 32px;
+      margin: 0 0 10px;
+    }
+
+    header p {
+      color: #c8d8e8;
+      margin: 0;
+    }
+
     main {
-      max-width: 650px;
+      max-width: 680px;
       margin: 25px auto;
-      padding: 0 14px;
+      padding: 0 15px;
     }
+
     .card {
       background: white;
-      border-radius: 14px;
-      padding: 18px;
-      margin-bottom: 16px;
+      padding: 20px;
+      border-radius: 15px;
+      margin-bottom: 18px;
       box-shadow: 0 3px 12px #102b4610;
     }
-    input, textarea, select, button {
+
+    h2 {
+      font-size: 20px;
+      margin-top: 0;
+    }
+
+    input, textarea, select {
       width: 100%;
-      padding: 12px;
-      margin-top: 10px;
+      padding: 13px;
+      margin: 8px 0;
       border: 1px solid #d5dfeb;
       border-radius: 9px;
       font-size: 15px;
+      background: white;
     }
-    textarea { min-height: 100px; resize: vertical; }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
     button {
+      border: none;
       background: #1769aa;
       color: white;
-      border: 0;
-      font-weight: bold;
+      padding: 12px 18px;
+      border-radius: 9px;
       cursor: pointer;
+      font-size: 15px;
+      font-weight: bold;
     }
-    .post { border-bottom: 1px solid #e5eaf0; padding: 14px 0; }
-    .post:last-child { border: 0; }
-    .post small { color: #718096; }
-    .actions { display: flex; gap: 10px; }
-    .actions button { width: auto; flex: 1; }
-    footer { text-align: center; padding: 25px; color: #718096; }
+
+    button:hover {
+      opacity: 0.85;
+    }
+
+    .publish {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .post {
+      border-bottom: 1px solid #e5eaf0;
+      padding: 15px 0;
+    }
+
+    .post:last-child {
+      border-bottom: none;
+    }
+
+    .post small {
+      color: #718096;
+    }
+
+    .post p {
+      white-space: pre-wrap;
+      line-height: 1.7;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .actions button {
+      flex: 1;
+    }
+
+    .secondary {
+      background: #526579;
+    }
+
+    .top-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      color: #718096;
+    }
+
+    body.dark {
+      background: #101b29;
+      color: #edf3fa;
+    }
+
+    body.dark .card {
+      background: #1c2b3d;
+    }
+
+    body.dark input,
+    body.dark textarea,
+    body.dark select {
+      background: #26394f;
+      color: white;
+      border-color: #42546a;
+    }
+
+    body.dark .post {
+      border-color: #42546a;
+    }
+
+    body.dark footer {
+      color: #aab8c8;
+    }
   </style>
 </head>
+
 <body>
-  <header>
-    <h1>🎓 CAMPUS DZ</h1>
-    <p>مجتمع الطلبة الجزائريين | Communauté des étudiants algériens</p>
-  </header>
 
-  <main>
-    <section class="card">
-      <h2>اختر جامعتك</h2>
-      <select id="university">
-        <option value="">اختر الجامعة</option>
-        <option>جامعة 8 ماي 1945 قالمة</option>
-        <option>جامعة باجي مختار عنابة</option>
-        <option>جامعة محمد خيضر بسكرة</option>
-        <option>جامعة منتوري قسنطينة</option>
-        <option>جامعة الجزائر 1</option>
-        <option>جامعة أخرى</option>
-      </select>
-    </section>
+<header>
+  <h1>🎓 CAMPUS DZ</h1>
+  <p id="subtitle">المجتمع الجامعي الجزائري</p>
 
-    <section class="card">
-      <h2>شارك طلبة جامعتك</h2>
-      <input id="nickname" maxlength="25" placeholder="اسمك المستعار">
-      <textarea id="content" maxlength="1000"
-        placeholder="ماذا تريد أن تشارك مع الطلبة؟"></textarea>
-      <button onclick="publish()">نشر المنشور</button>
-    </section>
+  <div class="top-actions">
+    <button class="secondary" onclick="changeLanguage()">
+      العربية / Français
+    </button>
 
-    <section class="card">
-      <h2>📢 آخر المنشورات</h2>
-      <div id="feed">
-        <p>مرحباً بك في CAMPUS DZ! كن أول من ينشر.</p>
-      </div>
-    </section>
-  </main>
+    <button class="secondary" onclick="toggleTheme()">
+      🌙 / ☀️
+    </button>
+  </div>
+</header>
 
-  <footer>
-    CAMPUS DZ © 2026 — معاً من أجل مجتمع جامعي أفضل
-  </footer>
+<main>
 
-  <script>
-    let posts = JSON.parse(localStorage.getItem("campusPosts") || "[]");
+  <section class="card">
+    <h2 id="universityTitle">🏛️ اختر جامعتك</h2>
 
-    function render() {
-      const feed = document.getElementById("feed");
-      feed.innerHTML = "";
-      if (!posts.length) {
-        feed.textContent = "لا توجد منشورات بعد.";
-        return;
-      }
+    <select id="university">
+      <option value="">اختر الجامعة</option>
+      <option>جامعة 8 ماي 1945 قالمة</option>
+      <option>جامعة باجي مختار عنابة</option>
+      <option>جامعة محمد خيضر بسكرة</option>
+      <option>جامعة منتوري قسنطينة</option>
+      <option>جامعة الجزائر 1</option>
+      <option>جامعة سطيف 1</option>
+      <option>جامعة باتنة 1</option>
+      <option>جامعة أخرى</option>
+    </select>
+  </section>
 
-      posts.forEach((post, index) => {
-        const article = document.createElement("article");
-        article.className = "post";
+  <section class="card">
+    <h2 id="publishTitle">✍️ أنشئ منشوراً</h2>
 
-        const author = document.createElement("strong");
-        author.textContent = post.nickname;
+    <input
+      id="nickname"
+      maxlength="25"
+      placeholder="اسمك المستعار"
+    >
 
-        const university = document.createElement("small");
-        university.textContent = " · " + post.university;
+    <textarea
+      id="content"
+      maxlength="1000"
+      placeholder="شارك أفكارك أو أسئلتك مع الطلبة..."
+    ></textarea>
 
-        const content = document.createElement("p");
-        content.textContent = post.content;
+    <button class="publish" id="publishButton" onclick="publish()">
+      نشر المنشور
+    </button>
+  </section>
 
-        const actions = document.createElement("div");
-        actions.className = "actions";
+  <section class="card">
+    <h2 id="feedTitle">📢 آخر المنشورات</h2>
+    <div id="feed"></div>
+  </section>
 
-        const like = document.createElement("button");
-        like.textContent = "❤️ " + post.likes;
-        like.onclick = () => {
-          posts[index].likes++;
-          save();
-        };
+</main>
 
-        actions.appendChild(like);
-        article.append(author, university, content, actions);
-        feed.appendChild(article);
-      });
+<footer>
+  CAMPUS DZ © 2026
+  <p>معاً من أجل مجتمع جامعي أفضل</p>
+</footer>
+
+<script>
+  let posts = JSON.parse(
+    localStorage.getItem("campusPosts") || "[]"
+  );
+
+  let french = false;
+
+  function save() {
+    localStorage.setItem(
+      "campusPosts",
+      JSON.stringify(posts)
+    );
+    render();
+  }
+
+  function publish() {
+    const nickname = document
+      .getElementById("nickname").value.trim();
+
+    const content = document
+      .getElementById("content").value.trim();
+
+    const university = document
+      .getElementById("university").value;
+
+    if (!nickname || !content || !university) {
+      alert(french
+        ? "Remplissez tous les champs."
+        : "يرجى ملء جميع الخانات.");
+      return;
     }
 
-    function publish() {
-      const nickname = document.getElementById("nickname").value.trim();
-      const content = document.getElementById("content").value.trim();
-      const university = document.getElementById("university").value;
+    posts.unshift({
+      nickname,
+      content,
+      university,
+      likes: 0,
+      date: new Date().toLocaleDateString()
+    });
 
-      if (!nickname || !content || !university) {
-        alert("أدخل الاسم المستعار والجامعة ومحتوى المنشور.");
-        return;
-      }
+    document.getElementById("content").value = "";
+    save();
+  }
 
-      posts.unshift({ nickname, content, university, likes: 0 });
-      save();
-      document.getElementById("content").value = "";
+  function likePost(index) {
+    posts[index].likes++;
+    save();
+  }
+
+  function render() {
+    const feed = document.getElementById("feed");
+    feed.replaceChildren();
+
+    if (posts.length === 0) {
+      feed.textContent = french
+        ? "Aucune publication pour le moment."
+        : "لا توجد منشورات حالياً. كن أول من ينشر!";
+      return;
     }
 
-    function save() {
-      localStorage.setItem("campusPosts", JSON.stringify(posts));
-      render();
-    }
+    posts.forEach((post, index) => {
+      const article = document.createElement("article");
+      article.className = "post";
+
+      const author = document.createElement("strong");
+      author.textContent = post.nickname;
+
+      const university = document.createElement("small");
+      university.textContent = " · " + post.university;
+
+      const content = document.createElement("p");
+      content.textContent = post.content;
+
+      const date = document.createElement("small");
+      date.textContent = post.date || "";
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+
+      const like = document.createElement("button");
+      like.textContent = "❤️ " + post.likes;
+      like.onclick = () => likePost(index);
+
+      actions.appendChild(like);
+
+      article.append(
+        author,
+        university,
+        content,
+        date,
+        actions
+      );
+
+      feed.appendChild(article);
+    });
+  }
+
+  function toggleTheme() {
+    document.body.classList.toggle("dark");
+  }
+
+  function changeLanguage() {
+    french = !french;
+
+    document.documentElement.lang =
+      french ? "fr" : "ar";
+
+    document.documentElement.dir =
+      french ? "ltr" : "rtl";
+
+    document.getElementById("subtitle").textContent =
+      french
+        ? "La communauté universitaire algérienne"
+        : "المجتمع الجامعي الجزائري";
+
+    document.getElementById("universityTitle").textContent =
+      french ? "🏛️ Choisissez votre université" : "🏛️ اختر جامعتك";
+
+    document.getElementById("publishTitle").textContent =
+      french ? "✍️ Créer une publication" : "✍️ أنشئ منشوراً";
+
+    document.getElementById("feedTitle").textContent =
+      french ? "📢 Publications récentes" : "📢 آخر المنشورات";
+
+    document.getElementById("nickname").placeholder =
+      french ? "Votre pseudonyme" : "اسمك المستعار";
+
+    document.getElementById("content").placeholder =
+      french
+        ? "Partagez vos idées avec les étudiants..."
+        : "شارك أفكارك أو أسئلتك مع الطلبة...";
+
+    document.getElementById("publishButton").textContent =
+      french ? "Publier" : "نشر المنشور";
 
     render();
-  </script>
+  }
+
+  render();
+</script>
+
 </body>
 </html>
