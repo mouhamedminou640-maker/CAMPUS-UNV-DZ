@@ -1,0 +1,164 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#102b46">
+  <title>CAMPUS DZ | المجتمع الجامعي الجزائري</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f2f5fa;
+      color: #172b42;
+    }
+    header {
+      background: #102b46;
+      color: white;
+      padding: 22px 16px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 8px; }
+    header p { margin: 0; color: #c8d8e8; }
+    main {
+      max-width: 650px;
+      margin: 25px auto;
+      padding: 0 14px;
+    }
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 3px 12px #102b4610;
+    }
+    input, textarea, select, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border: 1px solid #d5dfeb;
+      border-radius: 9px;
+      font-size: 15px;
+    }
+    textarea { min-height: 100px; resize: vertical; }
+    button {
+      background: #1769aa;
+      color: white;
+      border: 0;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .post { border-bottom: 1px solid #e5eaf0; padding: 14px 0; }
+    .post:last-child { border: 0; }
+    .post small { color: #718096; }
+    .actions { display: flex; gap: 10px; }
+    .actions button { width: auto; flex: 1; }
+    footer { text-align: center; padding: 25px; color: #718096; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎓 CAMPUS DZ</h1>
+    <p>مجتمع الطلبة الجزائريين | Communauté des étudiants algériens</p>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>اختر جامعتك</h2>
+      <select id="university">
+        <option value="">اختر الجامعة</option>
+        <option>جامعة 8 ماي 1945 قالمة</option>
+        <option>جامعة باجي مختار عنابة</option>
+        <option>جامعة محمد خيضر بسكرة</option>
+        <option>جامعة منتوري قسنطينة</option>
+        <option>جامعة الجزائر 1</option>
+        <option>جامعة أخرى</option>
+      </select>
+    </section>
+
+    <section class="card">
+      <h2>شارك طلبة جامعتك</h2>
+      <input id="nickname" maxlength="25" placeholder="اسمك المستعار">
+      <textarea id="content" maxlength="1000"
+        placeholder="ماذا تريد أن تشارك مع الطلبة؟"></textarea>
+      <button onclick="publish()">نشر المنشور</button>
+    </section>
+
+    <section class="card">
+      <h2>📢 آخر المنشورات</h2>
+      <div id="feed">
+        <p>مرحباً بك في CAMPUS DZ! كن أول من ينشر.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    CAMPUS DZ © 2026 — معاً من أجل مجتمع جامعي أفضل
+  </footer>
+
+  <script>
+    let posts = JSON.parse(localStorage.getItem("campusPosts") || "[]");
+
+    function render() {
+      const feed = document.getElementById("feed");
+      feed.innerHTML = "";
+      if (!posts.length) {
+        feed.textContent = "لا توجد منشورات بعد.";
+        return;
+      }
+
+      posts.forEach((post, index) => {
+        const article = document.createElement("article");
+        article.className = "post";
+
+        const author = document.createElement("strong");
+        author.textContent = post.nickname;
+
+        const university = document.createElement("small");
+        university.textContent = " · " + post.university;
+
+        const content = document.createElement("p");
+        content.textContent = post.content;
+
+        const actions = document.createElement("div");
+        actions.className = "actions";
+
+        const like = document.createElement("button");
+        like.textContent = "❤️ " + post.likes;
+        like.onclick = () => {
+          posts[index].likes++;
+          save();
+        };
+
+        actions.appendChild(like);
+        article.append(author, university, content, actions);
+        feed.appendChild(article);
+      });
+    }
+
+    function publish() {
+      const nickname = document.getElementById("nickname").value.trim();
+      const content = document.getElementById("content").value.trim();
+      const university = document.getElementById("university").value;
+
+      if (!nickname || !content || !university) {
+        alert("أدخل الاسم المستعار والجامعة ومحتوى المنشور.");
+        return;
+      }
+
+      posts.unshift({ nickname, content, university, likes: 0 });
+      save();
+      document.getElementById("content").value = "";
+    }
+
+    function save() {
+      localStorage.setItem("campusPosts", JSON.stringify(posts));
+      render();
+    }
+
+    render();
+  </script>
+</body>
+</html>
